@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add New Task</ion-title>
+    <ion-icon
+      name="close"
+      slot="end"
+      size="large"
+      class="ion-padding"
+      (click)="dismiss()"
+    ></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item>
+      <ion-input
+        [(ngModel)]="taskName"
+        placeholder="Write your task here"
+        required
+      >
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Priority</ion-label>
+      <ion-select [(ngModel)]="taskPriority">
+        <ion-select-option value="High">High</ion-select-option>
+        <ion-select-option value="Middle">Middle</ion-select-option>
+        <ion-select-option value="Low">Low</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <!-- Date -->
+    <ion-item id="open-modal">
+      <ion-icon name="calendar-outline" slot="start"></ion-icon>
+      <ion-label>Due Date</ion-label>
+      <ion-text slot="end">{{taskDate | date:'fullDate'}}</ion-text>
+    </ion-item>
+    <ion-modal trigger="open-modal">
+      <ng-template>
+        <ion-content>
+          <ion-datetime
+            [(ngModel)]="taskDate"
+            #datetime
+            size="cover"
+            (ionChange)="dateChanged(datetime.value)"
+            showDefaultButtons="true"
+            (ionCancel)="showPicker=false"
+          >
+          </ion-datetime>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <ion-item>
+      <ion-icon name="pricetag-outline" slot="start"></ion-icon>
+      <ion-label>Category</ion-label>
+      <span>{{taskCategory}}</span>
+    </ion-item>
+    <ion-item>
+      <ion-chip
+        *ngFor="let category of categories; let i = index"
+        (click)="selectedCategory(i)"
+      >
+        <ion-label>{{category}}</ion-label>
+      </ion-chip>
+    </ion-item>
+    <ion-button
+      class="ion-margin"
+      expand="block"
+      (click)="AddTask()"
+      [attr.disabled]="!taskName"
+      >Add Task</ion-button
+    >
+  </ion-card>
+</ion-content>
